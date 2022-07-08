@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team 7 project</title>
+    <canvas height="400" width="400"></canvas>
+	<link rel = "stylesheet" href="style.css">
+	<script>
+		var name = prompt("Enter your name");
+	</script>
+    <script src="p5.js"></script>
+    <!-- <script src="../addons/p5.sound.js"></script> -->
+    <!-- <script src="sketch.js"></script> -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./build/three.module.js",
+          "three/examples/jsm/controls/OrbitControls": "./jsm/controls/OrbitControls.js",
+          "three/examples/jsm/libs/stats.module": "./jsm/libs/stats.module.js",
+          "three/examples/jsm/libs/dat.gui.module": "./jsm/libs/dat.gui.module.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>Chat Box</h1>
+	<div class="controls-wrapper"></div> 
+    <ul id="messages"></ul>
+	<ul id="events"></ul>
+		<div class="controls">
+		<div class="chat-wrapper">
+			<form id="chat-form"></form>
+    <form action="">
+      <input id="m" placeholder="Enter your message..." autocomplete="off" required /><button>Send</button>
+    </form>
+		</div>
+	</div>
+    <main></main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      var socket = io();
+
+socket.emit('joining msg', name);
+
+$('form').submit(function(e) {
+  e.preventDefault();            // will prevent page reloading
+    socket.emit('chat message', (name + ':  ' + $('#m').val()));
+                $('#messages').append($('<li id="list">').text('You:  ' + $('#m').val()));
+    $('#m').val('');
+    return false;
+});
+socket.on('chat message', function(msg){
+    $('#messages').append($('<li>').text(msg));
+});
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.16"></script>
+    <script>
+      var GUI = lil.GUI;
+    </script>
+    <!-- <script type="module" src="sketch.js"></script> -->
+    <!-- <canvas class="webgl"></canvas> -->
+    <script type="module" src="client1.js"></script>
+  </body>
+</html>
